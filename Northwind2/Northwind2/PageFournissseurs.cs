@@ -12,6 +12,13 @@ namespace Northwind2
         public PageFournissseurs() : base("Fournisseurs", true)
         {
             Menu.AddOption("1", "Liste des pays", AfficherPays);
+            Menu.AddOption("2", "Fournisseurs d'un pays", SaisirPays);
+            Menu.AddOption("3", "Nombre de produits d'un pays", SaisirPays);
+        }
+
+        private void SaisirPays()
+        {
+            var fournisseur = Contexte.GetFournisseurs(string country);
 
         }
 
