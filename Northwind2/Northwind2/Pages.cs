@@ -14,7 +14,7 @@ namespace Northwind2
             Menu.AddOption("0", "Quitter l'application",
                 () => Environment.Exit(0));
             Menu.AddOption("1", "Fournisseurs",
-                () => Environment.Exit(1));
+                () => Northwind2App.Instance.NavigateTo(typeof(PageFournissseurs)));
         }
 
     }
