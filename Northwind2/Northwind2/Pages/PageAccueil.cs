@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Northwind2
+namespace Northwind2.Pages
 {
     public class PageAccueil : MenuPage
     {
@@ -15,6 +15,8 @@ namespace Northwind2
                 () => Environment.Exit(0));
             Menu.AddOption("1", "Fournisseurs",
                 () => Northwind2App.Instance.NavigateTo(typeof(PageFournissseurs)));
+            Menu.AddOption("3", "Produits",
+                () => Northwind2App.Instance.NavigateTo(typeof(PageProduits)));
         }
 
     }

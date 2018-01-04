@@ -1,4 +1,5 @@
-﻿using Outils.TConsole;
+﻿using Northwind2.Pages;
+using Outils.TConsole;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,8 @@ namespace Northwind2
             app.AddPage(accueil);
             Page fournisseur = new PageFournissseurs();
             app.AddPage(fournisseur);
-
+            Page produit = new PageProduits();
+            app.AddPage(produit);
             app.NavigateTo(accueil);
             app.Run();
         }

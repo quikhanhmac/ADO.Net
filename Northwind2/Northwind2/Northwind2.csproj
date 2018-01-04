@@ -43,9 +43,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contexte.cs" />
+    <Compile Include="Entites.cs" />
     <Compile Include="Northwind2App.cs" />
-    <Compile Include="PageFournissseurs.cs" />
-    <Compile Include="Pages.cs" />
+    <Compile Include="Pages\PageAccueil.cs" />
+    <Compile Include="Pages\PageFournisseur.cs" />
+    <Compile Include="Pages\PageFournissseurs.cs" />
+    <Compile Include="Pages\PageProduits.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.Designer.cs">
