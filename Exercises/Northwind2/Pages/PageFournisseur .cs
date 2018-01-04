@@ -13,12 +13,18 @@ namespace Northwind2
         {
             Menu.AddOption("1", "Liste des pays", AfficherPays);
             Menu.AddOption("2", "Fournisseur d'un pays", SaisirPays);
+            Menu.AddOption("3", "Nombre de produits d'un pays", AffichageNombreProduit);
         }
-
+        private void AffichageNombreProduit()
+        {
+            string pays = Input.Read<string>("Saisir un pays:");
+            int nbr = Contexte.GetNbProduits(pays);
+            Output.WriteLine(ConsoleColor.DarkCyan, nbr.ToString() + "produits");
+        }
         private void SaisirPays()
         {
-            string pays = Input.Read<string>("");
-            var liste = Contexte.GetFournisseur(pays);
+            string pays = Input.Read<string>("Saisir un pays:");
+            var liste = Contexte.GetFournisseurs(pays);
             ConsoleTable.From(liste, "Pays").Display("pays");
         }
 

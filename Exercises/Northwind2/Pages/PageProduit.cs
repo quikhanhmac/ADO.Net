@@ -20,8 +20,8 @@ namespace Northwind2.Pages
         {
             AffichageProduits();
             int IdP= Input.Read<int>("Id de produit à modifier:");
-            Produit P = GetProduit();
-            P.CategoryId
+           
+         
         }
 
         private void CreerProduit()

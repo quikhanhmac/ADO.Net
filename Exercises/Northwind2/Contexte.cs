@@ -8,24 +8,25 @@ using System.Threading.Tasks;
 
 namespace Northwind2
 {
-    enum Operation { Ajouter,Modifier}
-    public class Contexte
+    public enum Operations { Ajout, Modification }
+    public static class Contexte
     {
         public static List<string> GetpaysFournisseur()
         {
             var listPaysFournisseurs = new List<string>();
             var cmd = new SqlCommand();
             cmd.CommandText = @"select distinct A.Country from Address A
-innerjoin Supplier S on S.AddressId = A.AddressId
+inner join Supplier S on S.AddressId = A.AddressId
 order by 1";
             using (var cnx = new SqlConnection(Settings.Default.Northwind2))
             {
                 cmd.Connection = cnx;
                 cnx.Open();
-                using (SqlDataReader sdr = cmd.ExecuteReader())// 
+                using (SqlDataReader sdr = cmd.ExecuteReader())
                 {
                     while (sdr.Read())
                     {
+
                         listPaysFournisseurs.Add((string)sdr["Country"]);
                     }
                 }
@@ -34,9 +35,9 @@ order by 1";
             // permet de fermer cette connexion automatiquement à la fin du bloc using
             return listPaysFournisseurs;
         }
-        public static List<string> GetFournisseur(string pays)
+        public static List<Supplier> GetFournisseurs(string pays)
         {
-            var listeFournisseurs = new List<string>();
+            var listeFournisseurs = new List<Supplier>();
             var cmd = new SqlCommand();
             cmd.CommandText = @"select S.SupplierId, S.CompanyName
                                 from Address A
@@ -47,40 +48,47 @@ order by 1";
                 SqlDbType = SqlDbType.NVarChar,
                 ParameterName = "@id",
                 Value = pays
-
             };
             cmd.Parameters.Add(param);
             using (var cnx = new SqlConnection(Settings.Default.Northwind2))
             {
                 cmd.Connection = cnx;
                 cnx.Open();
-                cmd.ExecuteNonQuery();
+                using (SqlDataReader sdr = cmd.ExecuteReader())
+                {
+                    while (sdr.Read())
+                    {
+                        var fournisseur = new Supplier();
+                        fournisseur.SupplierId = (int)sdr["SupplierId"];
+                        fournisseur.CompanyName = (string)sdr["CompanyName"];
+                        listeFournisseurs.Add(fournisseur);
+                    }
+                }
             }
             return listeFournisseurs;
         }
-        public static int GetNbProduit(string pays)
+        public static int GetNbProduits(string nom)
         {
-
-            // On créé une commande et on définit le code sql à exécuter 
             var cmd = new SqlCommand();
-            cmd.CommandText = @"select count(*) NbProduit 
-from Product P 
-inner join Supplier S on S.SupplierId = P.SupplierId 
-inner join Address A on A.AddressId = S.AddressId 
-group by A.Country";
+            cmd.CommandText = @"select  count(*) NbProduits 
+from Product P
+inner join supplier S on S.SupplierId = P.SupplierId
+inner join Address A on A.AddressId =S.AddressId
+where A.Country = @nom";
+            var param = new SqlParameter
+            {
+                SqlDbType = SqlDbType.NVarChar,
+                ParameterName = "@nom",
+                Value = nom
+            };
+            cmd.Parameters.Add(param);
             using (var cnx = new SqlConnection(Settings.Default.Northwind2))
             {
-
                 cmd.Connection = cnx;
                 cnx.Open();
                 return (int)cmd.ExecuteScalar();
-            }
-
-            // Le fait d'avoir créé la connexion dans une instruction using 
-            // permet de fermer cette connexion automatiquement à la fin du bloc using 
-
+            }      
         }
-
         public static List<Categorie> GetCategories()
         {
             var listCategories = new List<Categorie>();
@@ -107,7 +115,6 @@ from Category";
             }
             return listCategories;
         }
-
         public static List<Produit> GetProduits(Guid Id)
         {
             var listeProduits = new List<Produit>();
@@ -115,7 +122,7 @@ from Category";
             cmd.CommandText = @"select p.ProductId,P.Name, P.UnitPrice,P.UnitsInStock
 from Product P
 where P.CategoryId = @Id
-order by P.Name";
+order by P.ProductId";
             var param = new SqlParameter
             {
                 SqlDbType = SqlDbType.UniqueIdentifier,
@@ -191,9 +198,62 @@ values (@Idcat,@Nom,@IdF,@PrixUnitaire,@UniteEnStock)";
                 cmd.ExecuteNonQuery();
             }
         }
+        public static void AjouterModifierProduit(Produit produit, Operations op)
+        {
+            var cmd = new SqlCommand();
+
+            if (op == Operations.Ajout)
+            {
+                cmd.CommandText = @"insert Product (Name, CategoryId, SupplierId, UnitPrice, UnitsInStock)
+									values (@Nom, @Cate, @Fourni, @PU, @Stock)";
+            }
+            else if (op == Operations.Modification)
+            {
+                cmd.CommandText = @"update Product set Name = @Nom, CategoryId = @Cate,
+								SupplierId = @Fourni, UnitPrice = @PU, UnitsInStock = @Stock
+								where ProductId = @Id";
+                cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.Int, ParameterName = "@Id", Value = produit.ProductID });
+            }
+
+            cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.NVarChar, ParameterName = "@Nom", Value = produit.Name });
+            cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.UniqueIdentifier, ParameterName = "@Cate", Value = produit.CategoryId });
+            cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.Int, ParameterName = "@Fourni", Value = produit.SupplierId });
+            cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.Decimal, ParameterName = "@PU", Value = produit.UnitPrice });
+            cmd.Parameters.Add(new SqlParameter { SqlDbType = SqlDbType.Int, ParameterName = "@Stock", Value = produit.UnitsInstock });
+
+            using (var cnx = new SqlConnection(Settings.Default.Northwind2))
+            {
+                cmd.Connection = cnx;
+                cnx.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // Requête delete - suppression d'un produit
+        // Si le produit est référencé par une commande, la requête lève une
+        // SqlException avec le N°547, qu'on intercepte dans le code appelant
+        public static void SupprimerProduit(int id)
+        {
+            var cmd = new SqlCommand();
+            cmd.CommandText = @"delete from Product where ProductId = @id";
+            cmd.Parameters.Add(new SqlParameter
+            {
+                SqlDbType = SqlDbType.Int,
+                ParameterName = "@id",
+                Value = id
+            });
+
+            using (var conn = new SqlConnection(Settings.Default.Northwind2))
+            {
+                cmd.Connection = conn;
+                conn.Open();
+                cmd.ExecuteNonQuery();
+            }
+        }
     }
-    public 
 }
+    
+
 
 
 
