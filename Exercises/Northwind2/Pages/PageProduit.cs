@@ -43,9 +43,10 @@ namespace Northwind2.Pages
         {
             List<Categorie> liste = Contexte.GetCategories();
             ConsoleTable.From(liste).Display("Categories");
-            Guid Id = Input.Read<Guid>("Choix de Categogie (Id):");
-            List<Produit> listeP = Contexte.GetProduits(Id);
-            ConsoleTable.From(listeP, "Produit").Display("Produit");
+            Guid Idcat = Input.Read<Guid>("Saisir un Id de categorie:");
+            List<Product> listep = Contexte.GetProduits(Idcat);
+            ConsoleTable.From(listep).Display("Produits");
         }
     }
 }
+

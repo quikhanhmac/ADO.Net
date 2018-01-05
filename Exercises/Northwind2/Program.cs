@@ -20,6 +20,9 @@ namespace Northwind2
             app.AddPage(accueil);
             Page fournisseur = new PageFournisseur();
             app.AddPage(fournisseur);
+            Page clientcommande = new PageClientsCommandes();
+            app.AddPage(clientcommande);
+            Page produit = new PageProduit();
             app.AddPage(new PageProduit());
 
             // Affichage de la page d'accueil

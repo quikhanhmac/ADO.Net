@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B87A6CD4-D326-4464-A84E-09E70F67D928}</ProjectGuid>
+    <ProjectGuid>{F91FB131-51A3-4FA4-BA48-1504763CCCF8}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Northwind2</RootNamespace>
-    <AssemblyName>Northwind2</AssemblyName>
+    <RootNamespace>EFDbFirst</RootNamespace>
+    <AssemblyName>EFDbFirst</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,38 +42,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contexte.cs" />
-    <Compile Include="Entites.cs" />
-    <Compile Include="Northwind2App.cs" />
-    <Compile Include="Pages\PageClientsCommandes.cs" />
-    <Compile Include="Pages\PageFournisseur .cs" />
-    <Compile Include="Pages\PageAccueil .cs" />
-    <Compile Include="Pages\PageProduit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Outils\Outils\Console\TConsole.csproj">
-      <Project>{222adafa-6e7d-404c-a04d-db30bdf702a9}</Project>
-      <Name>TConsole</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Outils\Outils\Data\TData.csproj">
-      <Project>{38c84f6e-814c-48cd-a358-29aac7dcb791}</Project>
-      <Name>TData</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

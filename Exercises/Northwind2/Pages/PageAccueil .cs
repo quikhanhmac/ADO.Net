@@ -15,6 +15,8 @@ namespace Northwind2.Pages
                 () => Environment.Exit(0));
             Menu.AddOption("1", "Fournisseur",
                  () => Northwind2App.Instance.NavigateTo(typeof(PageFournisseur)));
+            Menu.AddOption("2", "Clients et Commandes",
+                 () => Northwind2App.Instance.NavigateTo(typeof(PageClientsCommandes)));
             Menu.AddOption("3", "Produits",
                 () => Northwind2App.Instance.NavigateTo(typeof(PageProduit)));
         }
