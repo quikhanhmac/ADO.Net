@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,10 @@ namespace Northwind2
     {
         public int SupplierId { get; set; }
         public string CompanyName { get; set; }
+        [Display(ShortName="None")]
         public Guid AddressId { get; set; }
+        [Display(ShortName = "None")]
+        public virtual Address Address { get; set; }
     }
     public class Address
     {
@@ -51,6 +55,7 @@ namespace Northwind2
     }
     public class Orders
     {
+        [Display(ShortName = "None")]
         public string CustomerId { get; set; }
         public int OrderId { get; set; }
         public Guid AddressId { get; set; }

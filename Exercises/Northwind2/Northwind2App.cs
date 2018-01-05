@@ -10,7 +10,7 @@ namespace Northwind2
     public class Northwind2App : ConsoleApplication
     {
         private static Northwind2App _instance;
-
+        private static IDataContext _dataContext;
         /// <summary>
         /// Obtient l'instance unique de l'application
         /// </summary>
@@ -24,7 +24,15 @@ namespace Northwind2
                 return _instance;
             }
         }
-
+        public static IDataContext DataContext //singleton
+        {
+            get
+            {
+                if (_dataContext == null)
+                    _dataContext = new Context3();
+                return _dataContext;
+            }
+        }
         // Constructeur
         public Northwind2App()
         {

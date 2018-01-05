@@ -18,19 +18,19 @@ namespace Northwind2
         private void AffichageNombreProduit()
         {
             string pays = Input.Read<string>("Saisir un pays:");
-            int nbr = Contexte.GetNbProduits(pays);
+            int nbr = Northwind2App.DataContext.GetNbProduits(pays);
             Output.WriteLine(ConsoleColor.DarkCyan, nbr.ToString() + "produits");
         }
         private void SaisirPays()
         {
             string pays = Input.Read<string>("Saisir un pays:");
-            var liste = Contexte.GetFournisseurs(pays);
+            var liste = Northwind2App.DataContext.GetFournisseurs(pays);
             ConsoleTable.From(liste, "Pays").Display("pays");
         }
 
         private void AfficherPays()
         {
-            var pays = Contexte.GetpaysFournisseur();
+            var pays = Northwind2App.DataContext.GetpaysFournisseur();
             ConsoleTable.From(pays, "Pays").Display("pays");
         }
     }

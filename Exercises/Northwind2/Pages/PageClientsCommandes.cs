@@ -16,7 +16,7 @@ namespace Northwind2.Pages
 
         private void Affichage()
         {
-            List<Customer> liste = Contexte.GetClientsCommandes();
+            IList<Customer> liste = Northwind2App.DataContext.GetClientsCommandes();
             string c = Input.Read<string>("Saisir Id de client:");
             ConsoleTable.From(liste).Display("Clients");
         }

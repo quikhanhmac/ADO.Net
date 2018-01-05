@@ -26,7 +26,7 @@ namespace Northwind2.Pages
 
         private void CreerProduit()
         {
-            List<Categorie> liste = Contexte.GetCategories();
+            IList<Categorie> liste = Northwind2App.DataContext.GetCategories();
             ConsoleTable.From(liste).Display("Categories");
 
             Guid Idcat = Input.Read<Guid>("Choix de Categogie (Id):");
@@ -34,17 +34,17 @@ namespace Northwind2.Pages
             int IdF= Input.Read<int>("Id de fournisseur:");
             decimal PrixUnitaire = Input.Read<decimal>("Prix unitaire du produit:");
             Int16 UniteEnStock = Input.Read<Int16>("Unité en stock:");
-             Contexte.AjouterProduit(Idcat, Nom,IdF,PrixUnitaire,UniteEnStock);
+            Northwind2App.DataContext.AjouterProduit(Idcat, Nom,IdF,PrixUnitaire,UniteEnStock);
             Output.WriteLine(ConsoleColor.DarkGreen,"Produit créé avec succes");
             
         }
 
         private void AffichageProduits()
         {
-            List<Categorie> liste = Contexte.GetCategories();
+            IList<Categorie> liste = Northwind2App.DataContext.GetCategories();
             ConsoleTable.From(liste).Display("Categories");
             Guid Idcat = Input.Read<Guid>("Saisir un Id de categorie:");
-            List<Product> listep = Contexte.GetProduits(Idcat);
+            IList<Product> listep = Northwind2App.DataContext.GetProduits(Idcat);
             ConsoleTable.From(listep).Display("Produits");
         }
     }

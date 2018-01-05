@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 namespace Northwind2
 {
     public enum Operations { Ajout, Modification }
-    public static class Contexte
+    public class Context1 : IDataContext
     {
-        public static List<string> GetpaysFournisseur()
+        public IList<string> GetpaysFournisseur()
         {
             var listPaysFournisseurs = new List<string>();
             var cmd = new SqlCommand();
@@ -35,7 +35,7 @@ order by 1";
             // permet de fermer cette connexion automatiquement à la fin du bloc using
             return listPaysFournisseurs;
         }
-        public static List<Supplier> GetFournisseurs(string pays)
+        public IList<Supplier> GetFournisseurs(string pays)
         {
             var listeFournisseurs = new List<Supplier>();
             var cmd = new SqlCommand();
@@ -67,7 +67,7 @@ order by 1";
             }
             return listeFournisseurs;
         }
-        public static int GetNbProduits(string nom)
+        public int GetNbProduits(string nom)
         {
             var cmd = new SqlCommand();
             cmd.CommandText = @"select  count(*) NbProduits 
@@ -87,9 +87,9 @@ where A.Country = @nom";
                 cmd.Connection = cnx;
                 cnx.Open();
                 return (int)cmd.ExecuteScalar();
-            }      
+            }
         }
-        public static List<Categorie> GetCategories()
+        public IList<Categorie> GetCategories()
         {
             var listCategories = new List<Categorie>();
 
@@ -115,7 +115,7 @@ from Category";
             }
             return listCategories;
         }
-        public static List<Product> GetProduits(Guid IdCate)
+        public IList<Product> GetProduits(Guid IdCate)
         {
             var listeProduits = new List<Product>();
             var cmd = new SqlCommand();
@@ -148,7 +148,7 @@ Order by P.ProductId";
             }
             return listeProduits;
         }
-        public static List<Customer> GetClientsCommandes()
+        public IList<Customer> GetClientsCommandes()
         {
             var listeClientsCommandes = new List<Customer>();
 
@@ -198,7 +198,7 @@ order by C.CustomerId,O.OrderId";
 
             return listeClientsCommandes;
         }
-        public static void AjouterProduit(Guid idCat, string nom, int idS, decimal pr, Int16 uES)
+        public void AjouterProduit(Guid idCat, string nom, int idS, decimal pr, Int16 uES)
         {
             var cmd = new SqlCommand();
             cmd.CommandText = @"insert Product (CategoryId,Name,SupplierId,UnitPrice,UnitsInStock)
@@ -245,7 +245,7 @@ values(@idCat,@nom, @ idS,@pr,@ uES)";
                 cmd.ExecuteNonQuery();
             }
         }
-        public static void AjouterModifierProduit(Produit produit, Operations op)
+        public void AjouterModifierProduit(Produit produit, Operations op)
         {
             var cmd = new SqlCommand();
 
@@ -279,7 +279,7 @@ values(@idCat,@nom, @ idS,@pr,@ uES)";
         // Requête delete - suppression d'un produit
         // Si le produit est référencé par une commande, la requête lève une
         // SqlException avec le N°547, qu'on intercepte dans le code appelant
-        public static void SupprimerProduit(int id)
+        public void SupprimerProduit(int id)
         {
             var cmd = new SqlCommand();
             cmd.CommandText = @"delete from Product where ProductId = @id";
@@ -297,9 +297,13 @@ values(@idCat,@nom, @ idS,@pr,@ uES)";
                 cmd.ExecuteNonQuery();
             }
         }
+        public int EnregistrerModifsProduits()
+        {
+            return 0;
+        }
     }
 }
-    
+
 
 
 
