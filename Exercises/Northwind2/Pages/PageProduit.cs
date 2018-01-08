@@ -14,6 +14,19 @@ namespace Northwind2.Pages
             Menu.AddOption("1", "Liste des produits", AffichageProduits);
             Menu.AddOption("2", "Créer un nouveau produit", CreerProduit);
             Menu.AddOption("3", "Modifier un produit",ModifierProduit);
+            Menu.AddOption("6", "Enregistrer", EnregistrerProduit);
+        }
+
+        private void EnregistrerProduit()
+        {
+            try
+            {
+
+            }
+            catch
+            {
+
+            }
         }
 
         private void ModifierProduit()
@@ -26,7 +39,7 @@ namespace Northwind2.Pages
 
         private void CreerProduit()
         {
-            IList<Categorie> liste = Northwind2App.DataContext.GetCategories();
+            IList<Category> liste = Northwind2App.DataContext.GetCategories();
             ConsoleTable.From(liste).Display("Categories");
 
             Guid Idcat = Input.Read<Guid>("Choix de Categogie (Id):");
@@ -41,7 +54,7 @@ namespace Northwind2.Pages
 
         private void AffichageProduits()
         {
-            IList<Categorie> liste = Northwind2App.DataContext.GetCategories();
+            IList<Category> liste = Northwind2App.DataContext.GetCategories();
             ConsoleTable.From(liste).Display("Categories");
             Guid Idcat = Input.Read<Guid>("Saisir un Id de categorie:");
             IList<Product> listep = Northwind2App.DataContext.GetProduits(Idcat);

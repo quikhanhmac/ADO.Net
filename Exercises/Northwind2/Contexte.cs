@@ -89,9 +89,9 @@ where A.Country = @nom";
                 return (int)cmd.ExecuteScalar();
             }
         }
-        public IList<Categorie> GetCategories()
+        public IList<Category> GetCategories()
         {
-            var listCategories = new List<Categorie>();
+            var listCategories = new List<Category>();
 
             var cmd = new SqlCommand();
             cmd.CommandText = @"select CategoryId,Name,Description
@@ -105,7 +105,7 @@ from Category";
                 {
                     while (sdr.Read())
                     {
-                        var categorie = new Categorie();
+                        var categorie = new Category();
                         categorie.CategoryId = (Guid)sdr["CategoryId"];
                         categorie.Name = (string)sdr["Name"];
                         categorie.Description = (string)sdr["Description"];
@@ -139,9 +139,9 @@ Order by P.ProductId";
                     while (sdr.Read())
                     {
                         var product = new Product();
-                        product.ProductId = (int)sdr["ProductId"];
+                        product.ProductID= (int)sdr["ProductId"];
                         product.Name = (string)sdr["Name"];
-                        product.Unitprice = (decimal)sdr["Unitprice"];
+                        product.UnitPrice = (decimal)sdr["Unitprice"];
                         listeProduits.Add(product);
                     }
                 }
@@ -188,7 +188,7 @@ order by C.CustomerId,O.OrderId";
                         o.AddressId = (Guid)reader["AddressId"];
                         o.OrderDate = (DateTime)reader["OrderDate"];
                         o.ShippedDate = (DateTime)reader["ShippedDate"];
-                        o.Freicht = (decimal)reader["Freicht"];
+                        o.Freight = (decimal)reader["Freight"];
 
                         c.Orders.Add(o);
 
@@ -245,7 +245,7 @@ values(@idCat,@nom, @ idS,@pr,@ uES)";
                 cmd.ExecuteNonQuery();
             }
         }
-        public void AjouterModifierProduit(Produit produit, Operations op)
+        public void AjouterModifierProduit(Product produit, Operations op)
         {
             var cmd = new SqlCommand();
 

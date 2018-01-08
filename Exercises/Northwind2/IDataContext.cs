@@ -11,11 +11,11 @@ namespace Northwind2
         IList<string> GetpaysFournisseur();
         IList<Supplier> GetFournisseurs(string pays);
         int GetNbProduits(string nom);
-        IList<Categorie> GetCategories();
+        IList<Category> GetCategories();
         IList<Product> GetProduits(Guid IdCate);
         IList<Customer> GetClientsCommandes();
         void AjouterProduit(Guid idCat, string nom, int idS, decimal pr, Int16 uES);
-        void AjouterModifierProduit(Produit produit, Operations op);
+        void AjouterModifierProduit(Product produit, Operations op);
         void SupprimerProduit(int id);
         int EnregistrerModifsProduits();
     }
